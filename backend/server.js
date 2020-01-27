@@ -2,32 +2,42 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
-var mongoose = require('mongoose');
-var dbConfig = require('./config/database.config')
+var multer  = require('multer')
+var upload = multer();
 
-var 
-
+// create express app
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(cors());
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }))
+
+// parse application/json
+app.use(bodyParser.json())
+app.use(upload.array());
+
+// Configuring the database
+const dbConfig = require('./config/database.config.js');
+const mongoose = require('mongoose');
+
+mongoose.Promise = global.Promise;
+
+// Connecting to the database
+mongoose.connect(dbConfig.url, {
+    useNewUrlParser: true
+}).then(() => {
+    console.log("Successfully connected to the database");
+}).catch(err => {
+    console.log('Could not connect to the database. Exiting now...', err);
+    process.exit();
+});
 
 
+// require('./app/routes/note.routes.js')(app);
+require('./app/routes/login.routes.js')(app);
 
-app.use('/',)
-
-mongoose.connect(dbConfig.url,
-    {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    }).then(() => {
-        console.log('successfully connected to the database.')
-    }).catch(err => {
-        console.log('could not connect to the database. Exiting now...', err);
-        process.exit();
-    })
-
+// listen for requests
 app.listen(3000, () => {
-    console.log('server is listening on port 3000');
-})
-
+    console.log("Server is listening on port 3000");
+});
