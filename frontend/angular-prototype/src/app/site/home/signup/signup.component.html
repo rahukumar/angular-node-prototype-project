@@ -1,3 +1,19 @@
-<p>
-  signup works!
-</p>
+<form [formGroup]="userForm" (submit)="saveUser()">
+  <label for="name">Name</label>
+  <input formControlName="name" id="name" />
+  <control-messages [control]="userForm.get('name')"></control-messages>
+
+  <label for="email">Email</label>
+  <input formControlName="email" id="email" />
+  <control-messages [control]="userForm.get('email')"></control-messages>
+
+  <label for="password">Password</label>
+  <input formControlName="password" id="password" />
+  <control-messages [control]="userForm.get('password')"></control-messages>
+
+  <label for="confirm_password">Confirm Password</label>
+  <input formControlName="confirm_password" id="confirm_password" />
+  <control-messages [control]="userForm.get('confirm_password')"></control-messages>
+
+  <button type="submit" [disabled]="!userForm.valid">Submit</button>
+</form>

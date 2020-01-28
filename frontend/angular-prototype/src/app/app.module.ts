@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { SiteModule } from './site/site.module';
 import { RouterModule } from '@angular/router';
-
+import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent
@@ -12,6 +12,7 @@ import { RouterModule } from '@angular/router';
   imports: [
     BrowserModule,
     SiteModule,
+    ReactiveFormsModule,
     RouterModule.forRoot([])
   ],
   providers: [],
