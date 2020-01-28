@@ -7,6 +7,6 @@ export const SITE_ROUTES:Routes = [
     {
         path: '',
         component: SiteComponent,
-        loadChildren: 'app/site/home/home.module#HomeModule',
+        loadChildren: 'src/app/site/home/home.module#HomeModule',
     }
 ]

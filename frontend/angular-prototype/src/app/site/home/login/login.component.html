@@ -1,3 +1,12 @@
-<p>
-  login works!
-</p>
+<form [formGroup]="userForm" (submit)="saveUser()">
+
+  <label for="email">Email</label><br>
+  <input formControlName="email" id="email" /><br>
+  <control-messages [control]="userForm.get('email')"></control-messages><br>
+
+  <label for="password">Password</label><br>
+  <input formControlName="password" id="password" /><br>
+  <control-messages [control]="userForm.get('password')"></control-messages><br>
+
+  <button type="submit" [disabled]="!userForm.valid">Submit</button>
+</form>

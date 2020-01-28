@@ -11,8 +11,7 @@ import { ShareModule } from '../shared/share.module';
   imports: [
     CommonModule,
     routes,
-    HomeModule,
-    ReactiveFormsModule,
+    HomeModule
   ],
   declarations: [SiteComponent]
 })

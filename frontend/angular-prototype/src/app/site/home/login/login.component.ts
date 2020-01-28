@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { ValidationService } from 'src/app/shared/services/validation.service';
 
 @Component({
   selector: 'app-login',
@@ -6,10 +8,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-
-  constructor() { }
+  userForm:any
+  constructor(private formBuilder:FormBuilder) { }
 
   ngOnInit() {
+    this.userForm = this.formBuilder.group({
+      email: ['', [Validators.required, ValidationService.emailValidator]],
+      password: ['', Validators.required,ValidationService.passwordValidator],
+    });
   }
 
 }
