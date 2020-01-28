@@ -1,6 +1,8 @@
 const user = require('../models/user.model.js');
+const userValidEmail = require('../models/userValidEmail.model');
 const jwt = require('jsonwebtoken');
 const _secret = require('../../config/database.config');
+var nodemailer = require('nodemailer');
 
 // Create and Save a new Note
 exports.addUser = (req, res) => {
@@ -31,7 +33,12 @@ exports.addUser = (req, res) => {
         userModel.save()
             .then(data => {
                 console.log('successfully signed up.')
-                res.send(data);
+                let resPonse = {
+                    data: data,
+                    msg: 'URL has been sent to the email.Please check!'
+                }
+                sendUrl(resPonse)
+                res.send(resPonse);
             }).catch(err => {
                 res.status(500).send({
                     message: err.message || "Some error occurred while trying to login."
@@ -46,6 +53,53 @@ exports.addUser = (req, res) => {
 
 };
 
+sendUrl = (resPonse) => {
+    const userValidateEmail = new userValidEmail({
+        id: resPonse.data._id,
+        // otp: Math.floor((Math.random() * 9000) + 1000)
+        token : jwt.sign({ username: resPonse.data.username },
+            _secret.secret,
+            {
+                expiresIn: 60 * 5 // expires in 24 hours
+            }
+        )
+    })
+    userValidateEmail.save()
+        .then(data => {
+            console.log('successfully added the otp.');
+            sendEmail(resPonse, data);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while trying to save URL."
+            });
+        });
+}
+
+sendEmail = (resPonse,data) => {
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'rahulkumar230393@gmail.com',
+            pass: 'hornbill59'
+        }
+    });
+    var mailOptions = {
+        from: 'rahulkumar230393@gmail.com',
+        to: resPonse.data.email,
+        subject: 'Verification Link',
+        text: data.token
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+
+}
+
 exports.findAll = (req, res) => {
     user.find()
         .then(users => {
@@ -59,7 +113,7 @@ exports.findAll = (req, res) => {
 
 // Find a single user with a id
 exports.findOne = (req, res) => {
-    user.findOne({ username: req.body.username})
+    user.findOne({ username: req.body.username })
         .then(userData => {
             if (!userData || userData.length === 0) {
                 return res.status(404).send({
