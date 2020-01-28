@@ -67,7 +67,7 @@ sendUrl = (resPonse) => {
     userValidateEmail.save()
         .then(data => {
             console.log('successfully added the otp.');
-            sendEmail(resPonse, data);
+            // sendEmail(resPonse, data);
         }).catch(err => {
             res.status(500).send({
                 message: err.message || "Some error occurred while trying to save URL."
@@ -80,7 +80,7 @@ sendEmail = (resPonse,data) => {
         service: 'gmail',
         auth: {
             user: 'rahulkumar230393@gmail.com',
-            pass: 'hornbill59'
+            pass: '***'
         }
     });
     var mailOptions = {
