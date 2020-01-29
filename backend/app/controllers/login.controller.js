@@ -7,6 +7,7 @@ var nodemailer = require('nodemailer');
 // Create and Save a new Note
 exports.addUser = (req, res) => {
     // Validate request
+    console.log("rere",req.body)
     if (!req.body.username || !req.body.email) {
         if (!req.body.username) {
             return res.status(400).send({

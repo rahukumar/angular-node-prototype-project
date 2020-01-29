@@ -6,9 +6,9 @@ import { catchError } from 'rxjs/internal/operators/catchError';
 import { BaseService } from './base.service';
 import { environment } from 'src/environments/environment';
 interface User{
-  username:String,
-  email:String,
-  password:String
+  username?:String,
+  email?:String,
+  password?:String
 }
 @Injectable({
   providedIn: 'root'
@@ -22,12 +22,17 @@ export class UserService{
    }
 
   createUser(user: User): Observable<User> {
-      return this.httpClient.post<User>("user/update-profile", user)
+      return this.httpClient.post<User>("signup", user)
         .pipe(
           catchError(this._baseService.handleError('createUser', user))
         );
     }
-  
+  login(user){
+    return this.httpClient.post<User>("login", user)
+        .pipe(
+          catchError(this._baseService.handleError('createUser', user))
+        );
+  }
 
 
 

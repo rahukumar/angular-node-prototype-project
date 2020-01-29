@@ -14,7 +14,7 @@ export class SignupComponent implements OnInit {
 
   ngOnInit() {
     this.userForm = this.formBuilder.group({
-      name: ['', Validators.required],
+      username: ['', Validators.required],
       email: ['', Validators.compose([Validators.required, ValidationService.emailValidator])],
       password: ['', Validators.compose([Validators.required,ValidationService.passwordValidator])],
       confirm_password:['',Validators.compose([Validators.required,ValidationService.confirmPasswordValidator.bind(this)])], 
@@ -26,9 +26,9 @@ export class SignupComponent implements OnInit {
       console.log("user created",res)
     })
   }
-  password(formGroup: FormGroup) {
-    const { value: password } = formGroup.get('password');
-    const { value: confirmPassword } = formGroup.get('confirm_password');
-    return password === confirmPassword ? null : { passwordNotMatch: true };
-  }
+  // password(formGroup: FormGroup) {
+  //   const { value: password } = formGroup.get('password');
+  //   const { value: confirmPassword } = formGroup.get('confirm_password');
+  //   return password === confirmPassword ? null : { passwordNotMatch: true };
+  // }
 }

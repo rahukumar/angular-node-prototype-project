@@ -1,12 +1,11 @@
-<form [formGroup]="userForm" (submit)="saveUser()">
+<form [formGroup]="userForm" (submit)="logIn()">
 
-  <label for="email">Email</label><br>
-  <input formControlName="email" id="email" /><br>
-  <control-messages [control]="userForm.get('email')"></control-messages><br>
+  <label for="username">Username</label><br>
+  <input formControlName="username" id="username" /><br>
+  <control-messages [control]="userForm.get('username')"></control-messages><br>
 
   <label for="password">Password</label><br>
   <input formControlName="password" id="password" /><br>
   <control-messages [control]="userForm.get('password')"></control-messages><br>
-
   <button type="submit" [disabled]="!userForm.valid">Submit</button>
 </form>
