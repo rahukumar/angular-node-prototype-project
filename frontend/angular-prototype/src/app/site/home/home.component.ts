@@ -13,7 +13,10 @@ export class HomeComponent implements OnInit {
     private router: Router,private _userService:UserService) { }
 
   ngOnInit() {
-    this._userService.currentUser.subscribe(x => this.currentUser = x);
+    this._userService.currentUser.subscribe((x:any) => {
+      console.log("logedin ",x)
+      this.currentUser = x && x.user?x.user:null
+    });
   }
   logout() {
     this._userService.logout();

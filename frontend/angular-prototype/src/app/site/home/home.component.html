@@ -1,3 +1,5 @@
-<p>Loged IN as {{currentUser |json}}</p>
+<h1>Welcome!</h1>
+<h2>username: {{currentUser?.username }}</h2>
+<p>email: {{currentUser?.email }}</p>
 
 <button (click)="logout()"> Logout</button>

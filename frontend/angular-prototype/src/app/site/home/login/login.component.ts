@@ -32,6 +32,9 @@ export class LoginComponent implements OnInit {
   logIn(){
     this._userService.login(this.userForm.value).subscribe(res=>{
       console.log("user authenticated",res)
+      if(res.msg=="Authentication successfull"){
+        this.router.navigate(["home"])
+      }
     })
   }
 
