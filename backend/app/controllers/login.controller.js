@@ -114,8 +114,9 @@ exports.findAll = (req, res) => {
 
 // Find a single user with a id
 exports.findOne = (req, res) => {
-    user.findOne({ username: req.body.username, email: req.body.email })
+    user.findOne({ username: req.body.username})
         .then(userData => {
+            console.log('------------------',userData)
             if (!userData || userData.length === 0) {
                 return res.status(404).send({
                     message: "user not found with name " + req.body.username
@@ -165,6 +166,7 @@ exports.verifyEmail = (req, res) => {
                     .then(user => {
                         if (user) {
                             user.isVerified = true;
+                            user.save();
                             return res.status(200).send({
                                 msg: 'Success',
                                 res: user

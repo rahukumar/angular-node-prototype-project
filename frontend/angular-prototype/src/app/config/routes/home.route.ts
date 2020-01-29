@@ -6,6 +6,7 @@ import { SignupComponent } from '../../site/home/signup/signup.component';
 import { ForgetPasswordComponent } from '../../site/home/forget-password/forget-password.component';
 import { ResetPasswordComponent } from '../../site/home/reset-password/reset-password.component';
 import { AccountVerifyComponent } from '../../site/home/account-verify/account-verify.component';
+import { AuthGuard } from '../guards/auth.guard';
 
 export const HOME_ROUTES: Routes = [
 	{
@@ -20,11 +21,19 @@ export const HOME_ROUTES: Routes = [
 		]
 	},
 	{
+		path:"home",canActivate: [AuthGuard],
+		component:HomeComponent
+	},
+	{
 		path: 'signup',
 		component: SignupComponent,
 	},
 	{
 		path: 'login',
+		component: LoginComponent,
+	},
+	{
+		path: 'login/:token',
 		component: LoginComponent,
 	},
 	{
