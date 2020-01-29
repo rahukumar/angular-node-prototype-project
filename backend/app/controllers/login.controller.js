@@ -11,7 +11,7 @@ exports.addUser = (req, res) => {
     if (!req.body.username || !req.body.email) {
         if (!req.body.username) {
             return res.status(400).send({
-                message: "Note content can not be empty",
+                message: "username content can not be empty",
                 body: req.body
             });
         } else {
@@ -81,14 +81,14 @@ sendEmail = (resPonse, data) => {
         service: 'gmail',
         auth: {
             user: 'rahulkumar230393@gmail.com',
-            pass: '***'
+            pass: 'hornbill59'
         }
     });
     var mailOptions = {
         from: 'rahulkumar230393@gmail.com',
         to: resPonse.data.email,
         subject: 'Verification Link',
-        html: '<p>Click <a href="http://localhost:3000/sessions/recover/' + data.token + '">here</a> to reset your password</p>'
+        html: '<p>Click <a href="http://localhost:4200/login/' + data.token + '">here</a> to reset your password</p>'
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
@@ -114,7 +114,7 @@ exports.findAll = (req, res) => {
 
 // Find a single user with a id
 exports.findOne = (req, res) => {
-    user.findOne({ username: req.body.username })
+    user.findOne({ username: req.body.username, email: req.body.email })
         .then(userData => {
             if (!userData || userData.length === 0) {
                 return res.status(404).send({
@@ -122,6 +122,11 @@ exports.findOne = (req, res) => {
                 });
             } else {
                 if (userData.validatePassword(req.body.password)) {
+                    if (!userData.isVerified) {
+                        return res.status(400).send({
+                            msg: 'Email is not verified'
+                        })
+                    }
                     let token = jwt.sign({ username: req.body.username },
                         _secret.secret,
                         {
@@ -139,6 +144,37 @@ exports.findOne = (req, res) => {
                         msg: 'Wrong Password'
                     })
                 }
+            }
+
+        }).catch(err => {
+            return res.status(500).send({
+                message: "Error retrieving user with name " + req.body.username
+            });
+        });
+};
+
+exports.verifyEmail = (req, res) => {
+    userValidEmail.findOne({ token: req.params.token })
+        .then(userData => {
+            if (!userData || userData.length === 0) {
+                return res.status(404).send({
+                    message: "Email verification failed"
+                });
+            } else {
+                user.findOne({ _id: userData.id })
+                    .then(user => {
+                        if (user) {
+                            user.isVerified = true;
+                            return res.status(200).send({
+                                msg: 'Success',
+                                res: user
+                            })
+                        } else {
+                            return res.status(404).send({
+                                message: "Email verification failed."
+                            });
+                        }
+                    })
             }
 
         }).catch(err => {

@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-const userValidEmail = mongoose.Schema({
-    id: { type: mongoose.Schema.Types.ObjectId, unique: true },
+const userValidEmail = new Schema({
+    id: { type: Schema.Types.ObjectId, unique: true },
     token: String
 }, {
     timestamps: true

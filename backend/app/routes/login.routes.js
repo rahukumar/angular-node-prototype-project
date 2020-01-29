@@ -10,6 +10,8 @@ module.exports = (app) => {
 
     // Retrieve a single Note with noteId
     app.post('/login', login.findOne);
+    
+    app.get('/login/:token', login.verifyEmail);
 
     app.get('/home/:username', middleware.checkToken, login.getUserData);
 
