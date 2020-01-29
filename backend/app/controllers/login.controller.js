@@ -136,7 +136,7 @@ exports.findOne = (req, res) => {
                     )
                     let data = {
                         token: token,
-                        res: user,
+                        user: userData,
                         msg: 'Authentication successfull'
                     }
                     res.send(data);
