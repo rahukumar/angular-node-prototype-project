@@ -57,7 +57,7 @@ sendUrl = (resPonse) => {
     const userValidateEmail = new userValidEmail({
         id: resPonse.data._id,
         // otp: Math.floor((Math.random() * 9000) + 1000)
-        token : jwt.sign({ username: resPonse.data.username },
+        token: jwt.sign({ username: resPonse.data.username },
             _secret.secret,
             {
                 expiresIn: 60 * 5 // expires in 24 hours
@@ -67,7 +67,7 @@ sendUrl = (resPonse) => {
     userValidateEmail.save()
         .then(data => {
             console.log('successfully added the otp.');
-            // sendEmail(resPonse, data);
+            sendEmail(resPonse, data);
         }).catch(err => {
             res.status(500).send({
                 message: err.message || "Some error occurred while trying to save URL."
@@ -75,7 +75,7 @@ sendUrl = (resPonse) => {
         });
 }
 
-sendEmail = (resPonse,data) => {
+sendEmail = (resPonse, data) => {
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -87,7 +87,7 @@ sendEmail = (resPonse,data) => {
         from: 'rahulkumar230393@gmail.com',
         to: resPonse.data.email,
         subject: 'Verification Link',
-        text: data.token
+        html: '<p>Click <a href="http://localhost:3000/sessions/recover/' + data.token + '">here</a> to reset your password</p>'
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
