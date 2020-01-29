@@ -22,7 +22,7 @@ export class UserService{
    }
 
   createUser(user: User): Observable<User> {
-      return this.httpClient.post<User>("localhost:3001/signup", user, this._baseService.httpOptions())
+      return this.httpClient.post<User>("user/update-profile", user)
         .pipe(
           catchError(this._baseService.handleError('createUser', user))
         );
